@@ -1,0 +1,27 @@
+name: Generate Snake
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: Platane/snk/svg-only@v3
+        with:
+          github_user_name: electather
+          outputs: |
+            dist/github-snake-dark.svg?palette=github-dark
+
+      - uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "chore: update snake animation"
+          file_pattern: dist/github-snake-dark.svg
